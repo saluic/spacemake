@@ -1246,6 +1246,7 @@ class ProjectDF:
 
     def dump(self):
         """dump."""
+        self.df.index.set_names(["project_id", "sample_id"], inplace=True)
         self.df.to_csv(self.file_path)
 
     def add_sample_sheet(self, sample_sheet_path, basecalls_dir):

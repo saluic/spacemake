@@ -435,12 +435,11 @@ rule create_spatial_barcode_whitelist:
     input: parsed_spatial_barcodes
     output: temp(spatial_barcodes)
     run:
-        bc = pd.read_csv(input[0])
-        bc = bc[['cell_bc']]
-        bc = bc.append({'cell_bc': 'NNNNNNNNNNNN'}, ignore_index=True)
+        bc = pd.read_csv(input[0])["cell_bc"].to_list()
+        bc.append('NNNNNNNNNNNN')
 
         # save both the whitelist and the beads in a separate file
-        bc[['cell_bc']].to_csv(output[0], header=False, index=False)
+        pd.Series(bc).to_csv(output[0], header=False, index=False)
         
 rule create_dge:
     # creates the dge. depending on if the dge has _cleaned in the end it will require the
